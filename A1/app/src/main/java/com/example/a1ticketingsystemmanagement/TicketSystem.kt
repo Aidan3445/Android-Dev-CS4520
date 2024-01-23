@@ -1,17 +1,22 @@
 package com.example.a1ticketingsystemmanagement
 
 class TicketSystem {
-    private val processedTickets: List<Ticket> = mutableListOf()
+    val processedTickets: List<Ticket> = mutableListOf()
+
+    /**
+     * Process a [ticket]
+     * @param ticket the ticket to process
+     */
+    fun processTickets(ticket: Ticket) {
+        ticket.printTicket()
+        this.processedTickets.plus(ticket)
+    }
 
     /**
      * Process a list of [tickets]
      * @param tickets the list of tickets to process
      */
     fun processTickets(tickets: List<Ticket>) {
-        // For each ticket,
-        // 1. log ALL the params
-        // 2. print name
-        // anything else necessary
         for (ticket in tickets) {
             ticket.printTicket()
             this.processedTickets.plus(ticket)
@@ -66,14 +71,14 @@ class TicketSystem {
     /**
      * Get all tickets that are over a given [amount]
      * @param amount the amount to compare to
-     // @param ticket the ticket to compare to
+     * @param ticket the type of ticket to compare to
      * @return the list of tickets
      */
     fun getTicketsOverAmount(
         amount: Int,
-        // ticket: Ticket,
+        ticket: Ticket,
     ): List<Ticket> {
-        return processedTickets.filter { it.price > amount }
+        return processedTickets.filter { it::class == ticket::class && it.price > amount }
     }
 
     /**
@@ -84,34 +89,34 @@ class TicketSystem {
     fun getFilteredStudentTickets(excludeUni: String): List<Ticket> {
         return processedTickets.filter { it is StudentTicket && !it.isUni(excludeUni) }
     }
+}
 
-    /**
-     * Get the number of VIP Tickets that have been processed
-     * @return the number of tickets
-     */
-    fun getCountOfVipTickets(): Int {
-        return processedTickets.filterIsInstance<VipTicket>().size
-    }
+/**
+ * Get the number of VIP Tickets that have been processed
+ * @return the number of tickets
+ */
+fun TicketSystem.getCountOfVipTickets(): Int {
+    return processedTickets.filterIsInstance<VipTicket>().size
+}
 
-    /**
-     * Get the total price of all the RegularTicket that have been processed
-     * @return the total price
-     */
-    fun getTotalPriceForRegularTickets(): Int {
-        return processedTickets.filterIsInstance<RegularTicket>().sumOf { it.price }
-    }
+/**
+ * Get the total price of all the RegularTicket that have been processed
+ * @return the total price
+ */
+fun TicketSystem.getTotalPriceForRegularTickets(): Int {
+    return processedTickets.filterIsInstance<RegularTicket>().sumOf { it.price }
+}
 
-    /**
-     * Get the highest price of each ticket type that have been processed
-     * @return the list of prices
-     */
-    fun getHighestPriceForEachVipTickets(): List<Int> {
-        return listOf(
-            processedTickets.filterIsInstance<VipTicket>().maxOf { it.price },
-            processedTickets.filterIsInstance<RegularTicket>().maxOf { it.price },
-            processedTickets.filterIsInstance<StudentTicket>().maxOf { it.price },
-        )
-    }
+/**
+ * Get the highest price of each ticket type that have been processed
+ * @return the list of prices
+ */
+fun TicketSystem.getHighestPriceForEachVipTickets(): List<Int> {
+    return listOf(
+        processedTickets.filterIsInstance<VipTicket>().maxOf { it.price },
+        processedTickets.filterIsInstance<RegularTicket>().maxOf { it.price },
+        processedTickets.filterIsInstance<StudentTicket>().maxOf { it.price },
+    )
 }
 
 // Example : TA's will check as follows :
