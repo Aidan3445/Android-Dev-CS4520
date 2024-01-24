@@ -1,6 +1,6 @@
 package com.example.a1ticketingsystemmanagement
 
-class StudentTicket(
+data class StudentTicket(
     private val uniName: String,
     private val studentFirstName: String,
     private val studentLastName: String,

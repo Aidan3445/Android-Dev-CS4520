@@ -1,6 +1,6 @@
 package com.example.a1ticketingsystemmanagement
 
-class VipTicket(
+data class VipTicket(
     private val vipName: String,
     override val price: Int,
 ) : Ticket {

@@ -1,26 +1,15 @@
 package com.example.a1ticketingsystemmanagement
 
 class TicketSystem {
-    val processedTickets: List<Ticket> = mutableListOf()
+    val processedTickets: MutableList<Ticket> = mutableListOf()
 
     /**
      * Process a [ticket]
      * @param ticket the ticket to process
      */
-    fun processTickets(ticket: Ticket) {
+    private fun processTickets(ticket: Ticket) {
         ticket.printTicket()
-        this.processedTickets.plus(ticket)
-    }
-
-    /**
-     * Process a list of [tickets]
-     * @param tickets the list of tickets to process
-     */
-    fun processTickets(tickets: List<Ticket>) {
-        for (ticket in tickets) {
-            ticket.printTicket()
-            this.processedTickets.plus(ticket)
-        }
+        this.processedTickets.add(ticket)
     }
 
     /**
@@ -33,7 +22,9 @@ class TicketSystem {
         vipName: String,
         price: Int,
     ): Ticket {
-        return VipTicket(vipName, price)
+        val ticket = VipTicket(vipName, price)
+        processTickets(ticket)
+        return ticket
     }
 
     /**
@@ -48,7 +39,9 @@ class TicketSystem {
         price: Int,
         isDiscounted: Boolean,
     ): Ticket {
-        return RegularTicket(name, price, isDiscounted)
+        val ticket = RegularTicket(name, price, isDiscounted)
+        processTickets(ticket)
+        return ticket
     }
 
     /**
@@ -65,29 +58,27 @@ class TicketSystem {
         studentLastName: String,
         price: Int,
     ): Ticket {
-        return StudentTicket(uniName, studentFirstName, studentLastName, price)
+        val ticket = StudentTicket(uniName, studentFirstName, studentLastName, price)
+        processTickets(ticket)
+        return ticket
     }
 
     /**
      * Get all tickets that are over a given [amount]
      * @param amount the amount to compare to
-     * @param ticket the type of ticket to compare to
      * @return the list of tickets
      */
-    fun getTicketsOverAmount(
-        amount: Int,
-        ticket: Ticket,
-    ): List<Ticket> {
-        return processedTickets.filter { it::class == ticket::class && it.price > amount }
+    inline fun <reified T : Ticket> getTicketsOverAmount(amount: Int): List<T> {
+        return processedTickets.filterIsInstance<T>().filter { it.price > amount }
     }
 
     /**
-     * Get all StudentTicket that are not for a given [excludeUni]
-     * @param excludeUni the university to exclude
+     * Filter tickets by a given [criteria]
+     * @param criteria the criteria to filter by is a lambda [Ticket] -> [Boolean]
      * @return the list of tickets
      */
-    fun getFilteredStudentTickets(excludeUni: String): List<Ticket> {
-        return processedTickets.filter { it is StudentTicket && !it.isUni(excludeUni) }
+    inline fun <reified T : Ticket> getFilteredTickets(criteria: (Ticket) -> Boolean): List<Ticket> {
+        return processedTickets.filterIsInstance<T>().filter { criteria(it) }
     }
 }
 
@@ -111,18 +102,45 @@ fun TicketSystem.getTotalPriceForRegularTickets(): Int {
  * Get the highest price of each ticket type that have been processed
  * @return the list of prices
  */
-fun TicketSystem.getHighestPriceForEachVipTickets(): List<Int> {
-    return listOf(
-        processedTickets.filterIsInstance<VipTicket>().maxOf { it.price },
-        processedTickets.filterIsInstance<RegularTicket>().maxOf { it.price },
-        processedTickets.filterIsInstance<StudentTicket>().maxOf { it.price },
-    )
+fun TicketSystem.getHighestPriceTicketForEachType(): List<Ticket> {
+    var vipMax: Ticket? = null
+    var regularMax: Ticket? = null
+    var studentMax: Ticket? = null
+
+    for (ticket in processedTickets) {
+        when (ticket) {
+            is VipTicket -> {
+                if (vipMax == null || ticket.price > vipMax.price) {
+                    vipMax = ticket
+                }
+            }
+            is RegularTicket -> {
+                if (regularMax == null || ticket.price > regularMax.price) {
+                    regularMax = ticket
+                }
+            }
+            is StudentTicket -> {
+                if (studentMax == null || ticket.price > studentMax.price) {
+                    studentMax = ticket
+                }
+            }
+        }
+    }
+
+    return listOfNotNull(vipMax, regularMax, studentMax)
 }
 
 // Example : TA's will check as follows :
 
 fun main() {
     val obj = TicketSystem()
-    obj.generateVipTicket("John", 10) // log printed for VIP here
+    obj.generateVipTicket("John", 100) // log printed for VIP here
+    obj.generateRegularTicket("Sarah", 10, true) // log printed for Regular here
+    obj.generateRegularTicket("Andrew", 20, false) // log printed for Regular here
+    obj.generateStudentTicket("NEU", "Aidan", "Weinberg", 6) // log printed for Student here
+
     println(obj.getCountOfVipTickets()) // 1
+    println(obj.getTicketsOverAmount<VipTicket>(5))
+    println(obj.getTicketsOverAmount<StudentTicket>(5))
+    println(obj.getTotalPriceForRegularTickets())
 }

@@ -1,6 +1,6 @@
 package com.example.a1ticketingsystemmanagement
 
-class RegularTicket(
+data class RegularTicket(
     private val name: String,
     override val price: Int,
     private val isDiscounted: Boolean,
