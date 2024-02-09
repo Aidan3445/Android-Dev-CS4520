@@ -3,6 +3,7 @@ package com.cs4520.assignment1.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.cs4520.assignment1.R
@@ -41,13 +42,17 @@ class ProductListAdapter(private val products: List<Product>) :
         holder.elementView.findViewById<TextView>(R.id.element_date).text = product.date
         holder.elementView.findViewById<TextView>(R.id.element_price).text = product.price
 
-        // set image from type
-        val image =
-            if (product.type == "food") {
-                R.drawable.food
-            } else {
-                R.drawable.equipment
-            }
-        holder.elementView.findViewById<TextView>(R.id.element_image).setBackgroundResource(image)
+        // set image and background from type
+        val image: Int
+        val background: Int
+        if (product.type == "Food") {
+            image = R.drawable.food
+            background = R.color.food_color
+        } else {
+            image = R.drawable.equipment
+            background = R.color.equipment_color
+        }
+        holder.elementView.findViewById<ImageView>(R.id.element_image).setBackgroundResource(image)
+        holder.elementView.setBackgroundResource(background)
     }
 }

@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/element"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/list_item_height"
-    android:background="@color/design_default_color_secondary">
+    android:layout_height="@dimen/list_item_height">
 
     <ImageView
         android:id="@+id/element_image"

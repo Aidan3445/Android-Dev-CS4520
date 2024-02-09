@@ -1,11 +1,13 @@
 package com.cs4520.assignment1.fragments
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import com.cs4520.assignment1.R
-import com.google.android.material.snackbar.Snackbar.*
+import com.google.android.material.snackbar.Snackbar
 
 private const val ARG_PARAM1 = "username"
 private const val ARG_PARAM2 = "password"
@@ -23,23 +25,26 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
         }
     }
 
-    override fun onViewCreated(
-        view: View,
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ) {
-        super.onViewCreated(view, savedInstanceState)
+    ): View? {
+        val view: View = inflater.inflate(R.layout.login_fragment, container, false)
 
         // set onclick listener for the login button
-        view.findViewById<View>(R.id.login_button).setOnClickListener {
-            login()
+        view?.findViewById<View>(R.id.login_button)?.setOnClickListener {
+            login(view)
         }
+
+        return view
     }
 
     // login function
-    private fun login() {
+    private fun login(view: View) {
         // get username and password
-        val username = view?.findViewById<View>(R.id.username)?.let { it as EditText }
-        val password = view?.findViewById<View>(R.id.password)?.let { it as EditText }
+        val username = view.findViewById<View>(R.id.username)?.let { it as EditText }
+        val password = view.findViewById<View>(R.id.password)?.let { it as EditText }
 
         // check if username and password are not null and if they are correct
         if (username != null && password != null &&
@@ -58,10 +63,10 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
         } else {
             // notify user of invalid username or password
             val snackBar =
-                make(
+                Snackbar.make(
                     requireView(),
                     "Invalid username or password.\nPlease Try Again",
-                    LENGTH_LONG,
+                    Snackbar.LENGTH_LONG,
                 )
             snackBar.setAnchorView(username)
             snackBar.show()
