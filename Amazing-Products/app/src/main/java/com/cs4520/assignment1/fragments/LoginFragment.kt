@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import com.cs4520.assignment1.R
 import com.google.android.material.snackbar.Snackbar
 
@@ -50,16 +51,7 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
         if (username != null && password != null &&
             username.text.toString() == "admin" && password.text.toString() == "admin"
         ) {
-            val productListFragment: ProductListFragment = ProductListFragment()
-            val bundle = Bundle()
-            bundle.putString("username", username.text.toString())
-            productListFragment.arguments = bundle
-            parentFragmentManager.beginTransaction().apply {
-                replace(R.id.fragment, productListFragment)
-                // add to stack
-                addToBackStack(null)
-                commit()
-            }
+            Navigation.findNavController(view).navigate(R.id.login_action)
         } else {
             // notify user of invalid username or password
             val snackBar =
