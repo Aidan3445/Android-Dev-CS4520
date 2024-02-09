@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/element"
     android:layout_width="match_parent"
     android:layout_height="@dimen/list_item_height"
     android:background="@color/design_default_color_secondary">
 
     <ImageView
-        android:id="@+id/food_image"
+        android:id="@+id/element_image"
         android:layout_width="@dimen/list_image_size"
         android:layout_height="@dimen/list_image_size"
         android:layout_margin="10dp"
         android:adjustViewBounds="true"
-        android:contentDescription="@string/food"
-        android:scaleType="centerCrop"
-        android:src="@drawable/food" />
+        android:contentDescription="@string/product"
+        android:scaleType="centerCrop"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -22,24 +22,21 @@
         android:layout_gravity="center">
 
         <TextView
-            android:id="@+id/food_name"
+            android:id="@+id/element_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Banana"
             android:textSize="25sp"/>
 
         <TextView
-            android:id="@+id/food_date"
+            android:id="@+id/element_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2024-02-29"
             android:textSize="15sp"/>
 
         <TextView
-            android:id="@+id/food_price"
+            android:id="@+id/element_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="$ 29"
             android:textSize="20sp"/>
 
     </LinearLayout>

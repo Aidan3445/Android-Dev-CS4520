@@ -10,8 +10,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        supportActionBar?.title = "Amazing Products"
-
         val loginFragment: LoginFragment = LoginFragment()
 
         supportFragmentManager.beginTransaction().apply {
