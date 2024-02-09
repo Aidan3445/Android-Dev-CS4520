@@ -29,11 +29,11 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         val view: View = inflater.inflate(R.layout.login_fragment, container, false)
 
         // set onclick listener for the login button
-        view?.findViewById<View>(R.id.login_button)?.setOnClickListener {
+        view.findViewById<View>(R.id.login_button)?.setOnClickListener {
             login(view)
         }
 
