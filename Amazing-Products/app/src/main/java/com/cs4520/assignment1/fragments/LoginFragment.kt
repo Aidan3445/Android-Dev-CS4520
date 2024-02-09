@@ -1,9 +1,10 @@
-package com.cs4520.assignment1
+package com.cs4520.assignment1.fragments
 
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import com.cs4520.assignment1.R
 import com.google.android.material.snackbar.Snackbar.*
 
 private const val ARG_PARAM1 = "username"

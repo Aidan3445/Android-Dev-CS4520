@@ -1,7 +1,9 @@
-package com.cs4520.assignment1
+package com.cs4520.assignment1.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.cs4520.assignment1.R
+import com.cs4520.assignment1.fragments.LoginFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
