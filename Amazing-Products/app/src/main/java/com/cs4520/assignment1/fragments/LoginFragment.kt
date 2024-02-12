@@ -51,6 +51,10 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
         if (username != null && password != null &&
             username.text.toString() == "admin" && password.text.toString() == "admin"
         ) {
+            // clear the username and password fields
+            username.text.clear()
+            password.text.clear()
+
             Navigation.findNavController(view).navigate(R.id.login_action)
         } else {
             // notify user of invalid username or password
