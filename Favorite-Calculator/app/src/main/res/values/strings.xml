@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Favorite Calculator</string>
+    <string name="mvp">MVP</string>
+    <string name="mvvm">MVVM</string>
+</resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/selectPatternFragment">
+    <fragment
+        android:id="@+id/selectPatternFragment"
+        android:name="com.cs4520.assignment3.fragments.SelectPatternFragment"
+        android:label="SelectPatternFragment" >
+        <action
+            android:id="@+id/mvp_action"
+            app:destination="@id/MVPFragment" />
+        <action
+            android:id="@+id/mvvm_action"
+            app:destination="@id/MVVMFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/MVPFragment"
+        android:name="com.cs4520.assignment3.fragments.MVPFragment"
+        android:label="MVPFragment" />
+    <fragment
+        android:id="@+id/MVVMFragment"
+        android:name="com.cs4520.assignment3.fragments.MVVMFragment"
+        android:label="MVVMFragment" />
+</navigation>
