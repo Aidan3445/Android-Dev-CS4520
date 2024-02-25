@@ -5,7 +5,7 @@
     app:startDestination="@id/selectPatternFragment">
     <fragment
         android:id="@+id/selectPatternFragment"
-        android:name="com.cs4520.assignment3.fragments.SelectPatternFragment"
+        android:name="com.cs4520.assignment3.fragments.HomeFragment"
         android:label="SelectPatternFragment" >
         <action
             android:id="@+id/mvp_action"

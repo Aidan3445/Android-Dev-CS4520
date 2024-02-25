@@ -7,15 +7,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.cs4520.assignment3.R
-import com.cs4520.assignment3.databinding.SelectPatternBinding
+import com.cs4520.assignment3.databinding.HomeBinding
 
-class SelectPatternFragment : Fragment(R.layout.select_pattern) {
+class HomeFragment : Fragment(R.layout.home) {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        val binding = SelectPatternBinding.inflate(inflater, container, false)
+        val binding = HomeBinding.inflate(inflater, container, false)
 
         binding.MVPButton.setOnClickListener {
             // navigate to the MVP fragment

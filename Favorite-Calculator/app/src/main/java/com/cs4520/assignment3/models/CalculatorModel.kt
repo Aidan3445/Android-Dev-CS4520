@@ -26,6 +26,12 @@ class CalculatorModel {
         a: Double,
         b: Double,
     ): Double {
+        if (b == 0.0) {
+            // a / b will not throw an exception if b is 0, but it will return Infinity
+            // to avoid this, we throw an exception if b is 0
+            throw IllegalArgumentException("Cannot divide by zero.")
+        }
+
         return a / b
     }
 }

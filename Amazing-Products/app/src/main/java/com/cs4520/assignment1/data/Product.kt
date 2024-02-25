@@ -1,10 +1,7 @@
 package com.cs4520.assignment1.data
 
-data class Product(val name: String, val type: String, val date: String?, val price: String) {
-    constructor(name: String, type: String, date: String?, price: Int) :
-        this(name, type, if (!date) "" else date, "$$price.00")
-}
+sealed class Product() {
+    data class Equipment(val name: String, val price: Int) : Product()
 
-private operator fun String?.not(): Boolean {
-    return this.isNullOrEmpty() || this.lowercase() == "null"
+    data class Food(val name: String, val expirationDate: String, val price: Int) : Product()
 }
