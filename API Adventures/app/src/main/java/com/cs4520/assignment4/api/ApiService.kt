@@ -1,18 +1,18 @@
 package com.cs4520.assignment4.api
 
-import com.cs4520.assignment4.data.Product
-import retrofit2.Call
+import com.cs4520.assignment4.models.Product
+import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
     // get the first 30 products
     @GET(RetrofitClient.ENDPOINT)
-    suspend fun getProducts(): Call<Product>
+    suspend fun getProducts(): Response<Set<Product>>
 
     // get a page of products
-    @GET(RetrofitClient.ENDPOINT + RetrofitClient.PAGE)
+    @GET(RetrofitClient.ENDPOINT)
     suspend fun getProductsPage(
-        @Path("pn") pageNumber: Int,
-    ): Call<Product>
+        @Query("page") pageNumber: Int,
+    ): Response<Set<Product>>
 }

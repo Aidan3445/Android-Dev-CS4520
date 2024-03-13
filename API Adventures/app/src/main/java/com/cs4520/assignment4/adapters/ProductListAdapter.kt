@@ -5,10 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.cs4520.assignment4.R
-import com.cs4520.assignment4.data.Product
 import com.cs4520.assignment4.databinding.ElementBinding
+import com.cs4520.assignment4.models.Product
 
-class ProductListAdapter(private val products: List<Product>) :
+class ProductListAdapter(private var products: Set<Product>) :
     RecyclerView.Adapter<ProductListAdapter.ProductViewHolder>() {
     class ProductViewHolder(binding: ElementBinding) : RecyclerView.ViewHolder(binding.root) {
         val elementView: View = ElementBinding.bind(binding.root).element
@@ -36,20 +36,27 @@ class ProductListAdapter(private val products: List<Product>) :
         val binding = ElementBinding.bind(holder.elementView)
         // get elements from dataset at the position and
         // set the text of the view with the element's values
-        when (val product = products[position]) {
+        when (val product = products.elementAt(position)) {
             is Product.Equipment -> {
                 binding.elementName.text = product.name
-                binding.elementPrice.text = product.price.toString()
+                binding.elementDate.text = ""
+                binding.elementPrice.text = "$%.2f".format(product.price)
                 binding.elementImage.setImageResource(R.drawable.equipment)
                 binding.element.setBackgroundResource(R.color.equipment_color)
             }
             is Product.Food -> {
                 binding.elementName.text = product.name
-                binding.elementDate.text = product.expirationDate
-                binding.elementPrice.text = product.price.toString()
+                binding.elementDate.text = product.expiryDate
+                binding.elementPrice.text = "$%.2f".format(product.price)
                 binding.elementImage.setImageResource(R.drawable.food)
                 binding.element.setBackgroundResource(R.color.food_color)
             }
         }
+    }
+
+    // update the products in the adapter
+    fun updateProducts(newProducts: Set<Product>) {
+        products = newProducts
+        notifyDataSetChanged()
     }
 }

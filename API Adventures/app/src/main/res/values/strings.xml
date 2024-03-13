@@ -4,4 +4,8 @@
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="product">Product</string>
+    <string name="no_products">No products available</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="reload">Reload</string>
 </resources>
