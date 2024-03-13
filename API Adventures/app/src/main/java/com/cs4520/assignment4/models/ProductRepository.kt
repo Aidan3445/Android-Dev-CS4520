@@ -1,18 +1,12 @@
 package com.cs4520.assignment4.models
 
-import android.util.Log
 import com.cs4520.assignment4.api.Api
-import com.cs4520.assignment4.database.ProductDatabase
 import com.cs4520.assignment4.database.dao.ProductDao
 import com.cs4520.assignment4.database.entities.ProductEntity
 import org.json.JSONObject
 import java.net.UnknownHostException
 
 class ProductRepository(private val productDao: ProductDao) {
-    // constructor
-    constructor(db: ProductDatabase) : this(db.productDao()) {
-    }
-
     class FetchException(message: String) : Exception(message)
 
     // fetch products from api or db
@@ -22,7 +16,6 @@ class ProductRepository(private val productDao: ProductDao) {
             try {
                 fetchProductsFromAPI(pageNumber)
             } catch (e: UnknownHostException) {
-                Log.d("ProductRepository", "No internet, fetching from db")
                 fetchProductsFromDB(pageNumber)
             }
 

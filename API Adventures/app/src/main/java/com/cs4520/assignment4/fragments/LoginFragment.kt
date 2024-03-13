@@ -1,61 +1,45 @@
 package com.cs4520.assignment4.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.cs4520.assignment4.R
 import com.cs4520.assignment4.databinding.LoginFragmentBinding
+import com.cs4520.assignment4.viewmodels.LoginViewModel
 import com.google.android.material.snackbar.Snackbar
 
 // the login fragment
 class LoginFragment : Fragment(R.layout.login_fragment) {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private lateinit var binding: LoginFragmentBinding
+    private lateinit var viewModel: LoginViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+    override fun onViewCreated(
+        view: View,
         savedInstanceState: Bundle?,
-    ): View {
-        super.onCreateView(inflater, container, savedInstanceState)
-        val binding = LoginFragmentBinding.inflate(inflater, container, false)
+    ) {
+        super.onViewCreated(view, savedInstanceState)
+        binding = LoginFragmentBinding.bind(view)
+        viewModel = LoginViewModel()
+
+        // observe live data
+        viewModel.errorMessage.observe(viewLifecycleOwner) { message ->
+            // show error message
+            val snackBar = Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG)
+            snackBar.setAnchorView(binding.username)
+            snackBar.show()
+        }
+        viewModel.loginSuccess.observe(viewLifecycleOwner) {
+            // navigate to the home fragment
+            Navigation.findNavController(binding.root).navigate(R.id.login_action)
+            // clear the username and password fields
+            binding.username.text.clear()
+            binding.password.text.clear()
+        }
 
         // set onclick listener for the login button
         binding.loginButton.setOnClickListener {
-            login(binding)
-        }
-
-        return binding.root
-    }
-
-    // login function
-    private fun login(binding: LoginFragmentBinding) {
-        // get username and password
-        val username = binding.username
-        val password = binding.password
-
-        // check if username and password are not null and if they are correct
-        if (username.text.toString() == "admin" && password.text.toString() == "admin"
-        ) {
-            // clear the username and password fields
-            username.text.clear()
-            password.text.clear()
-
-            Navigation.findNavController(binding.root).navigate(R.id.login_action)
-        } else {
-            // notify user of invalid username or password
-            val snackBar =
-                Snackbar.make(
-                    requireView(),
-                    "Invalid username or password.\nPlease Try Again",
-                    Snackbar.LENGTH_LONG,
-                )
-            snackBar.setAnchorView(username)
-            snackBar.show()
+            viewModel.tryLogin(binding.username.text.toString(), binding.password.text.toString())
         }
     }
 }
