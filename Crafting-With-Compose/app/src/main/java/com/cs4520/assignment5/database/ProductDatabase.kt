@@ -15,17 +15,20 @@ abstract class ProductDatabase : RoomDatabase() {
         @Volatile
         private var inst: ProductDatabase? = null
 
-        fun getInstance(context: Context): ProductDatabase {
-            return inst ?: synchronized(this) {
-                val instance =
-                    Room.databaseBuilder(
-                        context.applicationContext,
-                        ProductDatabase::class.java,
-                        "product_database",
-                    ).build()
-                inst = instance
-                instance
+        fun init(context: Context) {
+            inst =
+                Room.databaseBuilder(
+                    context.applicationContext,
+                    ProductDatabase::class.java,
+                    "product_database",
+                ).build()
+        }
+
+        fun getInstance(): ProductDatabase {
+            if (inst == null) {
+                throw IllegalStateException("ProductDatabase must be initialized")
             }
+            return inst!!
         }
     }
 }

@@ -24,10 +24,11 @@ class ProductListFragment : Fragment(R.layout.product_list_fragment) {
     ) {
         super.onViewCreated(view, savedInstanceState)
         binding = ProductListFragmentBinding.bind(view)
+        ProductDatabase.init(requireContext())
         viewModel =
             ProductListViewModel(
                 ProductRepository(
-                    ProductDatabase.getInstance(requireContext()).productDao(),
+                    ProductDatabase.getInstance().productDao(),
                 ),
             )
 

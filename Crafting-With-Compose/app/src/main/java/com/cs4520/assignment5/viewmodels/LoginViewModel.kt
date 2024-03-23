@@ -23,6 +23,7 @@ class LoginViewModel : ViewModel() {
     ) {
         if (model.validateCredentials(username, password)) {
             loginSuccessEvent.postValue(Unit)
+            errorMessageData.postValue("")
         } else {
             errorMessageData.postValue("Invalid username or password\nPlease Try Again")
         }
