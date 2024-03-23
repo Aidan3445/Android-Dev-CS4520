@@ -1,16 +1,16 @@
-package com.cs4520.assignment4.fragments
+package com.cs4520.assignment5.fragments
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.cs4520.assignment4.R
-import com.cs4520.assignment4.adapters.ProductListAdapter
-import com.cs4520.assignment4.database.ProductDatabase
-import com.cs4520.assignment4.databinding.ProductListFragmentBinding
-import com.cs4520.assignment4.models.ProductRepository
-import com.cs4520.assignment4.viewmodels.ProductListViewModel
+import com.cs4520.assignment5.R
+import com.cs4520.assignment5.adapters.ProductListAdapter
+import com.cs4520.assignment5.database.ProductDatabase
+import com.cs4520.assignment5.databinding.ProductListFragmentBinding
+import com.cs4520.assignment5.models.ProductRepository
+import com.cs4520.assignment5.viewmodels.ProductListViewModel
 
 class ProductListFragment : Fragment(R.layout.product_list_fragment) {
     private lateinit var binding: ProductListFragmentBinding
@@ -75,6 +75,10 @@ class ProductListFragment : Fragment(R.layout.product_list_fragment) {
             // update pagination controls
             binding.paginationControls.previousButton.isEnabled = hasPrev
         }
+        viewModel.jumpToPage1.observe(viewLifecycleOwner) { jumpToP1 ->
+            // update pagination controls
+            binding.paginationControls.toPage1.visibility = if (jumpToP1) View.VISIBLE else View.GONE
+        }
         // add page controls
         binding.paginationControls.previousButton.setOnClickListener {
             viewModel.prevPage()
@@ -84,6 +88,9 @@ class ProductListFragment : Fragment(R.layout.product_list_fragment) {
         }
         binding.reloadButton.setOnClickListener {
             viewModel.fetchProducts()
+        }
+        binding.paginationControls.toPage1.setOnClickListener {
+            viewModel.jumpToPage1()
         }
 
         // make api initial call to get products

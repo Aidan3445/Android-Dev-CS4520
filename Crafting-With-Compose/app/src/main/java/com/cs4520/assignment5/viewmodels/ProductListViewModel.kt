@@ -1,10 +1,10 @@
-package com.cs4520.assignment4.viewmodels
+package com.cs4520.assignment5.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cs4520.assignment4.models.Product
-import com.cs4520.assignment4.models.ProductRepository
+import com.cs4520.assignment5.models.Product
+import com.cs4520.assignment5.models.ProductRepository
 import kotlinx.coroutines.launch
 
 class ProductListViewModel(private val repository: ProductRepository) : ViewModel() {
@@ -19,6 +19,8 @@ class ProductListViewModel(private val repository: ProductRepository) : ViewMode
     val pageNumber get() = pageNumberData
     private val hasPrevData = MutableLiveData(false)
     val hasPrev get() = hasPrevData
+    private val jumpToP1 = MutableLiveData(false)
+    val jumpToPage1 get() = jumpToP1
 
     // error handlers
     private val errorMessageData = MutableLiveData<String>()
@@ -50,6 +52,7 @@ class ProductListViewModel(private val repository: ProductRepository) : ViewMode
         val nextPage = (pageNumberData.value ?: 1) - 1
         pageNumberData.value = nextPage
         if (nextPage <= 1) hasPrevData.postValue(false)
+        if (nextPage < 10) jumpToP1.postValue(false)
 
         // make call
         fetchProducts()
@@ -59,6 +62,16 @@ class ProductListViewModel(private val repository: ProductRepository) : ViewMode
         val nextPage = (pageNumberData.value ?: 1) + 1
         pageNumberData.value = nextPage
         if (nextPage == 2) hasPrevData.postValue(true)
+        if (nextPage >= 10) jumpToP1.postValue(true)
+
+        // make call
+        fetchProducts()
+    }
+
+    fun jumpToPage1() {
+        pageNumberData.value = 1
+        hasPrevData.postValue(false)
+        jumpToP1.postValue(false)
 
         // make call
         fetchProducts()
