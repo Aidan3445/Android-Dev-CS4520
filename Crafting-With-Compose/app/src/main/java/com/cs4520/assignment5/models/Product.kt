@@ -20,7 +20,7 @@ class ProductDeserializer : JsonDeserializer<Product> {
     ): Product {
         val jsonObject = json?.asJsonObject ?: throw IllegalArgumentException("Invalid product JSON")
 
-        val name = jsonObject.get("name").asString
+        val name = jsonObject.get("name").asString // .substringBeforeLast('_')
         val price = jsonObject.get("price").asFloat
 
         return when (val type = jsonObject.get("type").asString) {

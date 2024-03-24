@@ -1,13 +1,18 @@
 package com.cs4520.assignment5.viewmodels
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cs4520.assignment5.models.Product
 import com.cs4520.assignment5.models.ProductRepository
+import com.cs4520.assignment5.workManager.ProductWorkScheduler
 import kotlinx.coroutines.launch
 
-class ProductListViewModel(private val repository: ProductRepository) : ViewModel() {
+class ProductListViewModel(
+    private val repository: ProductRepository,
+    application: Application,
+) : AndroidViewModel(application) {
     // fetch handlers
     private val productsData = MutableLiveData<Set<Product>>()
     val products get() = productsData
@@ -39,6 +44,7 @@ class ProductListViewModel(private val repository: ProductRepository) : ViewMode
                 }
 
                 productsData.postValue(response)
+                errorMessageData.postValue("")
             } catch (e: ProductRepository.FetchException) {
                 errorMessageData.postValue(e.message)
             } finally {
@@ -75,5 +81,12 @@ class ProductListViewModel(private val repository: ProductRepository) : ViewMode
 
         // make call
         fetchProducts()
+    }
+
+    fun triggerProductRefresh() {
+        // schedule work
+        ProductWorkScheduler().scheduleProductWork(
+            getApplication<Application>().applicationContext,
+        )
     }
 }

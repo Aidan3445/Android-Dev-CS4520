@@ -1,6 +1,5 @@
 package com.cs4520.assignment5.composables.components
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -44,7 +43,6 @@ fun PaginationControls(
         // jump to page one if available
         Button(
             onClick = {
-                Log.d("Pagination", "toPage1")
                 toPage1()
             },
             modifier =
@@ -60,7 +58,6 @@ fun PaginationControls(
         // previous page button
         Button(
             onClick = {
-                Log.d("Pagination", "prev")
                 prev()
             },
             modifier = Modifier.requiredWidth(105.dp),
@@ -79,7 +76,6 @@ fun PaginationControls(
         // next page button
         Button(
             onClick = {
-                Log.d("Pagination", "next")
                 next()
             },
             modifier = Modifier.requiredWidth(105.dp),

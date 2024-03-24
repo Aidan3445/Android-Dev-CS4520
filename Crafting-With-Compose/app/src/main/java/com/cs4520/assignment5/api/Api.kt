@@ -8,8 +8,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
     private const val BASE_URL: String = "https://kgtttq6tg9.execute-api.us-east-2.amazonaws.com/"
-    const val ENDPOINT: String = "prod/"
-    const val PAGE: String = "?page={pn}"
+    const val ENDPOINT: String = "prod"
+    const val RAND: String = "prod/random"
 
     private val gson =
         GsonBuilder()

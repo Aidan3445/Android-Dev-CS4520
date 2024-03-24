@@ -1,15 +1,13 @@
 package com.cs4520.assignment5.composables
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.material3.Button
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -21,18 +19,29 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.cs4520.assignment5.navigation.NavGraph
 import com.cs4520.assignment5.viewmodels.LoginViewModel
 
 @Preview(showBackground = true)
 @Composable
-fun LoginScreen(viewModel: LoginViewModel = LoginViewModel()) {
+fun LoginScreen(
+    viewModel: LoginViewModel = LoginViewModel(),
+    navController: NavController = rememberNavController(),
+) {
     // get error and success updates from the view model
     val errorMessage by viewModel.errorMessage.observeAsState()
     val loginSuccess by viewModel.loginSuccess.observeAsState()
+
+    // error message notification
+    val state = remember { SnackbarHostState() }
+    SnackbarHost(
+        hostState = remember { state },
+        modifier = Modifier.fillMaxWidth(),
+    )
 
     // use column to stack the username, password, and login button
     Column(
@@ -40,45 +49,34 @@ fun LoginScreen(viewModel: LoginViewModel = LoginViewModel()) {
             Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.SpaceAround,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         // remember fields
         var username by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
 
-        // username field
-        TextField(
-            value = username,
-            onValueChange = { username = it },
-            label = { Text("Username") },
-        )
+        Column {
+            // username field
+            TextField(
+                value = username,
+                onValueChange = { username = it },
+                label = { Text("Username") },
+                modifier = Modifier.padding(bottom = 10.dp),
+            )
 
-        // space between fields
-        Spacer(modifier = Modifier.height(10.dp))
-
-        // password field
-        TextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Password") },
-        )
-
-        Text(
-            text = if (errorMessage == null) "" else errorMessage!!,
-            modifier = Modifier.requiredHeight(40.dp),
-            color = Color.Red,
-            textAlign = TextAlign.Center,
-        )
-
-        // space between hidden error message and button
-        Spacer(modifier = Modifier.height(350.dp))
+            // password field
+            TextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Password") },
+            )
+        }
 
         // login button
         Button(
             onClick = {
                 viewModel.tryLogin(username, password)
-                Log.d("LoginScreen", "Attempting to login")
             },
             modifier = Modifier.fillMaxWidth(.9f),
         ) {
@@ -87,13 +85,20 @@ fun LoginScreen(viewModel: LoginViewModel = LoginViewModel()) {
 
         // handle login attempts
         LaunchedEffect(loginSuccess) {
-            loginSuccess.let {
+            loginSuccess?.let {
                 // navigate to the home fragment
-                Log.d("LoginScreen", "Navigating to home fragment")
+                navController.navigate(NavGraph.productListScreen)
                 // clear the username and password fields
                 username = ""
                 password = ""
             }
+        }
+
+        LaunchedEffect(errorMessage) {
+            if (errorMessage.isNullOrEmpty()) return@LaunchedEffect
+
+            state.showSnackbar(errorMessage!!)
+            viewModel.clearErrorMessage()
         }
     }
 }

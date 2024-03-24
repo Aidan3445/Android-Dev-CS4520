@@ -15,13 +15,17 @@ abstract class ProductDatabase : RoomDatabase() {
         @Volatile
         private var inst: ProductDatabase? = null
 
-        fun init(context: Context) {
-            inst =
-                Room.databaseBuilder(
-                    context.applicationContext,
-                    ProductDatabase::class.java,
-                    "product_database",
-                ).build()
+        fun init(context: Context): ProductDatabase {
+            if (inst == null) {
+                inst =
+                    Room.databaseBuilder(
+                        context.applicationContext,
+                        ProductDatabase::class.java,
+                        "product_database",
+                    ).build()
+            }
+
+            return inst!!
         }
 
         fun getInstance(): ProductDatabase {

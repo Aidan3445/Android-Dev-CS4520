@@ -15,4 +15,8 @@ interface ApiService {
     suspend fun getProductsPage(
         @Query("page") pageNumber: Int,
     ): Response<Set<Product>>
+
+    // get random products
+    @GET(RetrofitClient.RAND)
+    suspend fun getRandomProducts(): Response<Set<Product>>
 }

@@ -37,7 +37,7 @@ fun ProductList(
     // use lazy column for scrolling products
     LazyColumn {
         items(list.size) { index ->
-            ProductElement(product = list.elementAt(index))
+            ProductElement(list.elementAt(index))
         }
     }
 }
